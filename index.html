@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat App</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+  <script >
+var app = angular.module("chatApp", ["firebase"]);
+
+app.controller("chatController", function($scope) {
+  console.log('chat  controller exec')
+})
+
+app.controller("userController", function($scope, $firebaseArray ) {
+  var fbRef = new Firebase("https://photondynamics.firebaseio.com/");
+
+  $scope.users = $firebaseArray(fbRef);
+
+  $scope.addUser = function() {
+    $scope.users.$add({
+      name: $scope.newUser,
+      occupation: "Dunno"
+    })
+  }
+
+})
+/*
+app.factory("userFactory", function($firebaseArray) {
+  // Create a pointer to the users list inside FB
+  var usersRef = new Firebase("https://photondynamics.firebaseio.com/")
+
+
+    // Create some fake users
+    var usersRef = new Firebase("https://photondynamics.firebaseio.com/")
+    usersRef.push({name:"Charles", age:"too Old"})
+    usersRef.push({name:"Christine", attitude:"bitchen"})
+    usersRef.push({name:"Ethan", occupation:"teenager"})
+    usersRef.push({name:"Andrew", age:"youngster"})
+
+      console.log('user  controller exec')
+
+  // Now return a Firebase "List" which is a way handle our data as if it was
+  // an array (sounds like a wrapper to me)
+  return $firebaseArray(usersRef)
+})
+
+*/
+  </script>
+</head>
+<body ng-app='chatApp'>
+  <div ng-controller='userController'>
+    Register User: <input type="text" ng-model="newUser"><button ng-click='addUser()'>Register</button>
+
+
+Here I am {{user}}
+
+</div>
+</body>
+</html>
