@@ -14,7 +14,9 @@ app.controller("chatController", function($scope) {
 })
 
 app.controller("userController", function($scope, $firebaseArray ) {
-  var fbRef = new Firebase("https://photondynamics.firebaseio.com/");
+  // This works even if /users did not pre-exist
+  // Each add creates a new instance in the List with a unique Id
+  var fbRef = new Firebase("https://photondynamics.firebaseio.com/users");
 
   $scope.users = $firebaseArray(fbRef);
 
@@ -55,6 +57,10 @@ app.factory("userFactory", function($firebaseArray) {
 
 
 Here I am {{user}}
+User List
+<ul>
+  <li ng-repeat="user in users">{{u.name}} {{u.occupation}}</li>
+</ul>
 
 </div>
 </body>
