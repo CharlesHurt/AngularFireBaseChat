@@ -21,12 +21,18 @@ app.controller("userController", function($scope, $firebaseArray ) {
   $scope.users = $firebaseArray(fbRef);
 
   $scope.addUser = function() {
-    $scope.users.$add({
-      name: $scope.newUser,
-      occupation: "Dunno"
-    })
-  }
+    // First find out if this is a unique user name
 
+    fbRef.orderByChild("name").equalTo($scope.newUser).on("child_added", function(snapshot) {
+      console.log(snapshot.key());
+      if (snapshot.numChildren() === 0) {
+        $scope.users.$add({
+          name: $scope.newUser,
+          occupation: "Dunno"
+        })
+      }
+    });
+  }
 })
 /*
 app.factory("userFactory", function($firebaseArray) {
@@ -56,10 +62,10 @@ app.factory("userFactory", function($firebaseArray) {
     Register User: <input type="text" ng-model="newUser"><button ng-click='addUser()'>Register</button>
 
 
-Here I am {{user}}
+Welcome {{newuser}}<br>
 User List
 <ul>
-  <li ng-repeat="user in users">{{u.name}} {{u.occupation}}</li>
+  <li ng-repeat="user in users">{{name}} {{occupation}}</li>
 </ul>
 
 </div>
